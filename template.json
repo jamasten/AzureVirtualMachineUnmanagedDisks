@@ -1,0 +1,137 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.16.2.56959",
+      "templateHash": "6984011002350414849"
+    }
+  },
+  "parameters": {
+    "DiskName": {
+      "type": "string"
+    },
+    "ImageOffer": {
+      "type": "string"
+    },
+    "ImagePublisher": {
+      "type": "string"
+    },
+    "ImageSku": {
+      "type": "string"
+    },
+    "ImageVersion": {
+      "type": "string"
+    },
+    "Location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]"
+    },
+    "NetworkInterfaceName": {
+      "type": "string"
+    },
+    "OperatingSystemType": {
+      "type": "string"
+    },
+    "StorageAccountName": {
+      "type": "string"
+    },
+    "StorageAccountResourceGroupName": {
+      "type": "string"
+    },
+    "StorageAccountSubscriptionId": {
+      "type": "string"
+    },
+    "StorageContainerName": {
+      "type": "string"
+    },
+    "SubnetName": {
+      "type": "string"
+    },
+    "VhdName": {
+      "type": "string"
+    },
+    "VirtualMachineName": {
+      "type": "string"
+    },
+    "VirtualNetworkName": {
+      "type": "string"
+    },
+    "VirtualNetworkResourceGroupName": {
+      "type": "string"
+    },
+    "VirtualMachineLocalAdministratorPassword": {
+      "type": "securestring"
+    },
+    "VirtualMachineLocalAdministratorUsername": {
+      "type": "string"
+    },
+    "VirtualMachineSize": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2015-06-15",
+      "name": "[parameters('NetworkInterfaceName')]",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[resourceId(subscription().subscriptionId, parameters('VirtualNetworkResourceGroupName'), 'Microsoft.Network/virtualNetworks/subnets', parameters('VirtualNetworkName'), parameters('SubnetName'))]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2016-04-30-preview",
+      "name": "[parameters('VirtualMachineName')]",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('VirtualMachineSize')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('VirtualMachineName')]",
+          "adminUsername": "[parameters('VirtualMachineLocalAdministratorUsername')]",
+          "adminPassword": "[parameters('VirtualMachineLocalAdministratorPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('ImagePublisher')]",
+            "offer": "[parameters('ImageOffer')]",
+            "sku": "[parameters('ImageSku')]",
+            "version": "[parameters('ImageVersion')]"
+          },
+          "osDisk": {
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[format('{0}{1}/{2}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('StorageAccountSubscriptionId'), parameters('StorageAccountResourceGroupName')), 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName')), '2022-09-01').primaryEndpoints.blob, parameters('StorageContainerName'), parameters('VhdName'))]"
+            },
+            "name": "[parameters('DiskName')]",
+            "osType": "[parameters('OperatingSystemType')]"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('NetworkInterfaceName'))]"
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkInterfaces', parameters('NetworkInterfaceName'))]"
+      ]
+    }
+  ]
+}
