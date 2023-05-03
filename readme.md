@@ -1,5 +1,7 @@
 # Azure Virtual Machine with an Unmanaged Disk
 
+This solution will allow you to deploy an Azure Virtual Machine while specifiying a VHD as the source image. Deploying virtual machines from VHDs in an Azure Storage Account (aka unmanaged disks) is not a best practice but may be required in some scenarios.
+
 ## Deployment Options
 
 ### Azure Portal
@@ -23,7 +25,3 @@ az deployment sub create \
     --location '<Azure location>' \
     --template-uri 'https://raw.githubusercontent.com/jamasten/AzureVirtualMachineUnmanagedDisks/main/template.json'
 ````
-
-## Description
-
-Deploying virtual machine disks as VHD's in an Azure Storage Account is not a best practice but may be required in some scenarios.  This solution provides an example of the required properties and values in an ARM template.
