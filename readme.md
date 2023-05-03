@@ -1,4 +1,4 @@
-# Virtual Machine with Unmanaged Disks
+# Azure Virtual Machine with an Unmanaged Disk
 
 ## Deployment Options
 
