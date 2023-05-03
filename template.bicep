@@ -25,7 +25,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing 
   name: StorageAccountName
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2015-06-15' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2022-09-01' = {
   name: NetworkInterfaceName
   location: Location
   properties: {
@@ -43,7 +43,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2015-06-15' = {
   }
 }
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2016-04-30-preview' = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-11-01' = {
   name: VirtualMachineName
   location: Location
   properties: {

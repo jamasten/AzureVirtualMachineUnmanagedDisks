@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.16.2.56959",
-      "templateHash": "6984011002350414849"
+      "templateHash": "5791644358084140711"
     }
   },
   "parameters": {
@@ -74,7 +74,7 @@
   "resources": [
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2022-09-01",
       "name": "[parameters('NetworkInterfaceName')]",
       "location": "[parameters('Location')]",
       "properties": {
@@ -93,7 +93,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2016-04-30-preview",
+      "apiVersion": "2022-11-01",
       "name": "[parameters('VirtualMachineName')]",
       "location": "[parameters('Location')]",
       "properties": {
